@@ -76,7 +76,7 @@ main(int argc, char *argv[])
     // ensure that number of arguments is as expected
     if (argc != 2 && argc != 3)
     {
-        fprintf(stderr, usage);
+        fprintf(stderr, "%s", usage);
         return 1;
     }
 
@@ -89,7 +89,7 @@ main(int argc, char *argv[])
         g.level = "l33t";
     else
     {
-        fprintf(stderr, usage);
+        fprintf(stderr, "%s", usage);
         return 2;
     }
 
@@ -103,7 +103,7 @@ main(int argc, char *argv[])
         char c;
         if (sscanf(argv[2], " %d %c", &g.number, &c) != 1)
         {
-            fprintf(stderr, usage);
+            fprintf(stderr, "%s", usage);
             return 3;
         }
 
@@ -186,6 +186,30 @@ main(int argc, char *argv[])
             case CTRL('l'):
                 redraw_all();
                 break;
+
+            case KEY_UP:
+            	g.y = (g.y == 0) ? 8 : g.y - 1;
+            	//--g.y;
+            	show_cursor();
+            	break;
+
+            case KEY_DOWN:
+            	g.y = (g.y == 8) ? 0 : g.y + 1;
+            	//++g.y;
+            	show_cursor();
+            	break;
+
+            case KEY_LEFT:
+            	g.x = (g.x == 0) ? 8 : g.x - 1;
+            	// --g.x;
+            	show_cursor();
+            	break;
+
+            case KEY_RIGHT:
+            	g.x = (g.x == 8) ? 0 : g.x + 1;
+            	// ++g.x;
+            	show_cursor();
+            	break;
         }
 
         // log input (and board's state) if any was received this iteration
