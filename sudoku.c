@@ -57,7 +57,7 @@ void draw_numbers(void);
 void hide_banner(void);
 bool load_board(void);
 void handle_signal(int signum);
-void log_move(int ch);
+// void log_move(int ch);
 void redraw_all(void);
 bool restart_game(void);
 void show_banner(char *b);
@@ -237,8 +237,8 @@ main(int argc, char *argv[])
 		}
 
 		// log input (and board's state) if any was received this iteration
-		if (ch != ERR)
-			log_move(ch);
+		/*if (ch != ERR)
+			log_move(ch);*/
 	}
 	while (ch != 'Q');
 
@@ -572,7 +572,7 @@ load_board(void)
 
 /*
  * Logs input and board's state to log.txt to facilitate automated tests.
- */
+
 
 void
 log_move(int ch)
@@ -595,7 +595,7 @@ log_move(int ch)
 
 	// that's it
 	fclose(fp);
-}
+} */
 
 
 /*
