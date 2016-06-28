@@ -47,7 +47,7 @@ struct
 // custom globals
 int board_fixed[9][9];
 int filled = 0;
-
+bool won = false;
 
 // prototypes
 void draw_grid(void);
@@ -200,25 +200,25 @@ main(int argc, char *argv[])
 			break;
 
 		case KEY_UP:
-			g.y = (g.y == 0) ? 8 : g.y - 1;
+			if (!won) g.y = (g.y == 0) ? 8 : g.y - 1;
 			//--g.y;
-			show_cursor();
+			if (!won) show_cursor();
 			break;
 
 		case KEY_DOWN:
-			g.y = (g.y == 8) ? 0 : g.y + 1;
+			if (!won) g.y = (g.y == 8) ? 0 : g.y + 1;
 			//++g.y;
 			show_cursor();
 			break;
 
 		case KEY_LEFT:
-			g.x = (g.x == 0) ? 8 : g.x - 1;
+			if (!won) g.x = (g.x == 0) ? 8 : g.x - 1;
 			// --g.x;
 			show_cursor();
 			break;
 
 		case KEY_RIGHT:
-			g.x = (g.x == 8) ? 0 : g.x + 1;
+			if (!won) g.x = (g.x == 8) ? 0 : g.x + 1;
 			// ++g.x;
 			show_cursor();
 			break;
@@ -233,7 +233,7 @@ main(int argc, char *argv[])
 		case '7' :
 		case '8' :
 		case '9' :
-			update_board(getInt(ch));
+			if (!won) update_board(getInt(ch));
 			break;
 		}
 
@@ -286,7 +286,9 @@ void update_board(int val) {
 	g.board[g.y][g.x] = val;
 	draw_numbers();
 	show_cursor();
-	++filled;
+	if (val != 0)
+		++filled;
+	else --filled;
 	if (filled == 81) wonGame();
 }
 
@@ -349,9 +351,12 @@ bool valid3x3(int val) {
  */
 
 void wonGame() {
-	drawToBanner("You won!");
-	++g.number;
-	restart_game();
+	refresh();
+	/*attron(COLOR_PAIR(PAIR_BANNER));
+	draw_numbers();
+	attroff(COLOR_PAIR(PAIR_BANNER));	*/
+	drawToBanner("You Won! Press q to Quit!");
+	won = true;
 }
 
 /*
@@ -568,6 +573,7 @@ load_board(void)
 
 	// check which numbers came with the board and game setup
 	filled = 0;
+	won = false;
 	for (int a = 0; a < 9; ++a)
 		for (int b = 0; b < 9; ++b)
 		{
