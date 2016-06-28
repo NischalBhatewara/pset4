@@ -73,6 +73,7 @@ bool moveValid(int val);
 bool validRow(int val);
 bool validCol(int val);
 bool valid3x3(int val);
+void wonGame();
 
 /*
  * Main driver for the game.
@@ -285,6 +286,8 @@ void update_board(int val) {
 	g.board[g.y][g.x] = val;
 	draw_numbers();
 	show_cursor();
+	++filled;
+	if (filled == 81) wonGame();
 }
 
 /*
@@ -337,8 +340,18 @@ bool valid3x3(int val) {
 	int subStartY = subY * 3;
 	for (int i = subStartX; i < subStartX + 3; ++i)
 		for (int j = subStartY; j < subStartY + 3; ++j)
-			if (g.board[i][j] == val) return false;
+			if (g.board[j][i] == val) return false;
 	return true;
+}
+
+/*
+ * Show user he has won
+ */
+
+void wonGame() {
+	drawToBanner("You won!");
+	++g.number;
+	restart_game();
 }
 
 /*
@@ -553,7 +566,8 @@ load_board(void)
 		return false;
 	}
 
-	// check which numbers came with the board
+	// check which numbers came with the board and game setup
+	filled = 0;
 	for (int a = 0; a < 9; ++a)
 		for (int b = 0; b < 9; ++b)
 		{
@@ -562,7 +576,6 @@ load_board(void)
 				++filled;
 			} else board_fixed[a][b] = 0;
 		}
-
 
 	// w00t
 	fclose(fp);
