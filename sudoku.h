@@ -8,7 +8,7 @@
  ***************************************************************************/
 
 // game's author
-#define AUTHOR "John Harvard"
+#define AUTHOR "Nischal M"
 
 // game's title
 #define TITLE "Sudoku"
